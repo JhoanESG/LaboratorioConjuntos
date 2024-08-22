@@ -25,3 +25,25 @@ conjunto3 = {5, 6, 7}
 resultado = union_conjuntos(conjunto1, conjunto2, conjunto3)
 
 print("Unión de los conjuntos en una lista:", resultado)
+
+
+
+def diferencia_conjuntos(conjunto_base, *conjuntos):
+    # Realizar la diferencia de conjuntos
+    diferencia = conjunto_base.difference(*conjuntos)
+    
+    # Convertir el resultado a una lista
+    lista_diferencia = list(diferencia)
+    
+    return lista_diferencia
+
+
+# Definir conjuntos
+conjunto_base = {1, 2, 3, 4, 5}
+conjunto2 = {4, 5, 6}
+conjunto3 = {5, 7}
+
+# Obtener la diferencia como una lista
+resultado = diferencia_conjuntos(conjunto_base, conjunto2, conjunto3)
+
+print("Diferencia de los conjuntos en una lista:", resultado)
