@@ -1,82 +1,62 @@
 import random
-import itertools
 
-#OPERACION BASICA UNION DE CONJUNTOS -------------------------------------------------
+# Función para leer conjuntos desde la entrada del usuario
+def leer_conjuntos():
+    conjuntos = []
+    while True:
+        entrada = input("Ingrese un conjunto (o presione Enter para finalizar): ")
+        if not entrada:
+            break
+        # Convertir la cadena de entrada en un conjunto
+        try:
+            conjunto = set(map(int, entrada.split()))
+            conjuntos.append(conjunto)
+        except ValueError:
+            print("Entrada inválida. Asegúrese de ingresar números separados por espacios.")
+    return conjuntos
+
+# OPERACION BASICA UNION DE CONJUNTOS -------------------------------------------------
 def union_conjuntos(*conjuntos):
-    # Crear una lista vacía para almacenar la unión de los elementos
     lista_union = []
-    
-    # Crear un conjunto para rastrear los elementos ya agregados
     elementos_agregados = set()
-    
-    # Iterar sobre cada conjunto
     for conjunto in conjuntos:
-        # Iterar sobre cada elemento del conjunto
         for elemento in conjunto:
-            # Si el elemento no ha sido agregado previamente, se agrega a la lista y al conjunto de seguimiento
             if elemento not in elementos_agregados:
                 lista_union.append(elemento)
                 elementos_agregados.add(elemento)
-    
     return lista_union
 
-# Definir tres conjuntos
-conjunto1 = {1, 2, 3}
-conjunto2 = {3, 4, 5}
-conjunto3 = {5, 6, 7}
-
-# Obtener la unión como una lista
-resultado = union_conjuntos(conjunto1, conjunto2, conjunto3)
-
-print("Unión de los conjuntos en una lista:", resultado)
-
-
-
-
-
-#OPERACION BASICA DIFERENCIA DE CONJUNTOS -------------------------------------------------
+# OPERACION BASICA DIFERENCIA DE CONJUNTOS -------------------------------------------------
 def diferencia_conjuntos(conjunto_base, *conjuntos):
-    # Realizar la diferencia de conjuntos
     diferencia = conjunto_base.difference(*conjuntos)
-    
-    # Convertir el resultado a una lista
     lista_diferencia = list(diferencia)
-    
     return lista_diferencia
 
-
-# Definir conjuntos
-conjunto_base = {1, 2, 3, 4, 5}
-conjunto2 = {4, 5, 6}
-conjunto3 = {5, 7}
-
-# Obtener la diferencia como una lista
-resultado = diferencia_conjuntos(conjunto_base, conjunto2, conjunto3)
-
-print("Diferencia de los conjuntos en una lista:", resultado)
-
-
-
-#OPERACION BASICA SUBCONJUNTO ALEATORIO -------------------------------------------------
+# OPERACION BASICA SUBCONJUNTO ALEATORIO -------------------------------------------------
 def subcojunto_aleatorio(*conjuntos):
-    # Seleccionar un conjunto aleatorio de los conjuntos proporcionados
+    if not conjuntos:
+        raise ValueError("Debe proporcionar al menos un conjunto.")
     conjunto_seleccionado = random.choice(conjuntos)
-    
-    # Obtener un tamaño aleatorio para el subconjunto (entre 0 y el tamaño del conjunto seleccionado)
     tamaño_subconjunto = random.randint(0, len(conjunto_seleccionado))
-    
-    # Generar un subconjunto aleatorio del tamaño seleccionado
-    subconjunto = set(itertools.islice(random.sample(conjunto_seleccionado, tamaño_subconjunto), tamaño_subconjunto))
-    
+    lista_conjunto = list(conjunto_seleccionado)
+    subconjunto = set(random.sample(lista_conjunto, tamaño_subconjunto))
     return conjunto_seleccionado, subconjunto
 
-# Definir varios conjuntos
-conjunto1 = {1, 2, 3, 4, 5}
-conjunto2 = {6, 7, 8, 9}
-conjunto3 = {10, 11, 12}
+# Leer conjuntos desde la entrada del usuario
+conjuntos = leer_conjuntos()
 
-# Obtener un conjunto aleatorio y un subconjunto de este
-conjunto_aleatorio, subconjunto = subcojunto_aleatorio(conjunto1, conjunto2, conjunto3)
+if conjuntos:
+    # Usar los conjuntos en las funciones
+    print("Unión de los conjuntos en una lista:", union_conjuntos(*conjuntos))
 
-print("Conjunto seleccionado:", conjunto_aleatorio)
-print("Subconjunto aleatorio:", subconjunto)
+    if len(conjuntos) > 1:
+        conjunto_base = conjuntos[0]
+        otros_conjuntos = conjuntos[1:]
+        print("Diferencia de los conjuntos en una lista:", diferencia_conjuntos(conjunto_base, *otros_conjuntos))
+    
+    if len(conjuntos) > 1:
+        conjunto_aleatorio, subconjunto = subcojunto_aleatorio(*conjuntos)
+        print("Conjunto seleccionado:", conjunto_aleatorio)
+        print("Subconjunto aleatorio:", subconjunto)
+else:
+    print("No se han ingresado conjuntos.")
