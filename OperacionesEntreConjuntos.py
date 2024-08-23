@@ -1,4 +1,7 @@
+
 import random
+from matplotlib_venn import venn2, venn3
+import matplotlib.pyplot as plt
 
 # Función para leer conjuntos desde la entrada del usuario
 def leer_conjuntos():
@@ -16,7 +19,7 @@ def leer_conjuntos():
     return conjuntos
 
 # OPERACION BASICA UNION DE CONJUNTOS -------------------------------------------------
-# OPERACION BASICA SUPERCONJUNTO YA QUE ES EL UNIVERSAL QUE SE REPRESENTA CON LA UNION -------------------------------------------------
+#OPERACION BASICA SUPER CONJUNTO ------------------------------------------------------
 def union_conjuntos(*conjuntos):
     lista_union = []
     elementos_agregados = set()
@@ -37,18 +40,40 @@ def diferencia_conjuntos(conjunto_base, *conjuntos):
 def subcojunto_aleatorio(*conjuntos):
     if not conjuntos:
         raise ValueError("Debe proporcionar al menos un conjunto.")
+
     conjunto_seleccionado = random.choice(conjuntos)
-    tamaño_subconjunto = random.randint(0, len(conjunto_seleccionado))
+    
+    if len(conjunto_seleccionado) > 0:
+        tamaño_subconjunto = random.randint(1, len(conjunto_seleccionado))
+    else:
+        tamaño_subconjunto = 0
+    
+    # Convertir el conjunto en una lista para usar random.sample()
     lista_conjunto = list(conjunto_seleccionado)
+    # Generar un subconjunto aleatorio del tamaño seleccionado
     subconjunto = set(random.sample(lista_conjunto, tamaño_subconjunto))
+    
     return conjunto_seleccionado, subconjunto
+# Función para mostrar el diagrama de Venn
+def mostrar_diagrama_venn(conjuntos):
+    if len(conjuntos) == 2:
+        venn2(conjuntos)
+        plt.show()
+    elif len(conjuntos) == 3:
+        venn3(conjuntos)
+        plt.show()
+    else:
+        print("Solo se pueden mostrar diagramas de Venn para 2 o 3 conjuntos.")
+
 
 # Leer conjuntos desde la entrada del usuario
 conjuntos = leer_conjuntos()
+ # Mostrar diagrama de Venn
+
 
 if conjuntos:
     # Usar los conjuntos en las funciones
-    print("Unión de los conjuntos en una lista y el superconjunto", union_conjuntos(*conjuntos))
+    print("Unión de los conjuntos en una lista y el superconjunto:", union_conjuntos(*conjuntos))
 
     if len(conjuntos) > 1:
         conjunto_base = conjuntos[0]
@@ -59,5 +84,10 @@ if conjuntos:
         conjunto_aleatorio, subconjunto = subcojunto_aleatorio(*conjuntos)
         print("Conjunto seleccionado:", conjunto_aleatorio)
         print("Subconjunto aleatorio:", subconjunto)
+
+    
+        mostrar_diagrama_venn(conjuntos)
+   
 else:
     print("No se han ingresado conjuntos.")
+
