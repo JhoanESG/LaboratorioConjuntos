@@ -16,6 +16,7 @@ def leer_conjuntos():
     return conjuntos
 
 # OPERACION BASICA UNION DE CONJUNTOS -------------------------------------------------
+# OPERACION BASICA SUPERCONJUNTO YA QUE ES EL UNIVERSAL QUE SE REPRESENTA CON LA UNION -------------------------------------------------
 def union_conjuntos(*conjuntos):
     lista_union = []
     elementos_agregados = set()
@@ -47,7 +48,7 @@ conjuntos = leer_conjuntos()
 
 if conjuntos:
     # Usar los conjuntos en las funciones
-    print("Unión de los conjuntos en una lista:", union_conjuntos(*conjuntos))
+    print("Unión de los conjuntos en una lista y el superconjunto", union_conjuntos(*conjuntos))
 
     if len(conjuntos) > 1:
         conjunto_base = conjuntos[0]
