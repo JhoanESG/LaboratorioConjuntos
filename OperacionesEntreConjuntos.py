@@ -16,21 +16,55 @@ def union_conjuntos(*conjuntos):
     
     return lista_union
 
-# Definir tres conjuntos
-conjunto1 = {1, 2, 3}
-conjunto2 = {3, 4, 5}
-conjunto3 = {5, 6, 7}
-
-# Obtener la unión como una lista
-resultado = union_conjuntos(conjunto1, conjunto2, conjunto3)
-
-print("Unión de los conjuntos en una lista:", resultado)
 
 def calcularInterseccion(conjuntos):
+    repetidos = []
+    for element in conjuntos[0]:
+        if all(element in conjunto for conjunto in conjuntos) and element not in repetidos:
+            repetidos.append(element)
 
-    vector_aux = []
-    for i, conjunto in enumerate(conjuntos):
-        vector_aux = vector_aux + conjunto
+    return repetidos
 
+
+def calcularDS(conjuntos):
+    resultado = []
+    if len(conjuntos) < 2:
+
+        resultado = conjuntos
+
+    else:
+        repetidos = []
+        union = conjuntos[0]+conjuntos[1]
+        
+        for element in conjuntos[0]:
+            if element in conjuntos[1] and element not in repetidos:
+                repetidos.append(element)
+        # Nueva lista excluyendo los números a eliminar
+        conjuntos[1] = [element for element in union if element not in repetidos]
+        del conjuntos[0]
+        resultado = calcularDS(conjuntos)
+
+    return resultado
+
+def calcularDiferenciaSimetrica(conjuntos):
+    interseccion = calcularInterseccion(conjuntos)
+    nuevo_conjuntos = []
+    print(interseccion)
+
+    # Iterar sobre cada conjunto en el array de conjuntos
+    for conjunto in conjuntos:
+        # Crear una lista temporal para almacenar los elementos que no están en interseccion
+        nuevo_conjunto = []
+        
+        # Iterar sobre cada elemento en el conjunto
+        for element in conjunto:
+            # Si el elemento no está en interseccion, agregarlo al nuevo_conjunto
+            if element not in interseccion:
+                nuevo_conjunto.append(element)
+        
+        # Agregar el nuevo_conjunto al resultado
+        nuevo_conjuntos.append(nuevo_conjunto)
     
-    
+    resultado = calcularDS(nuevo_conjuntos)
+    return resultado
+
