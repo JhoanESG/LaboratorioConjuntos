@@ -1,7 +1,67 @@
-
 import random
-from matplotlib_venn import venn2, venn3
+
 import matplotlib.pyplot as plt
+from matplotlib_venn import venn2, venn3
+from matplotlib.patches import Ellipse
+
+
+
+def mostrar_diagrama_venn(conjuntos, nombres=None):
+    conjuntos = list(map(set, conjuntos))
+    
+    # Definir nombres predeterminados si no se proporcionan
+    nombres = ['a', 'b', 'c'][:len(conjuntos)] if nombres is None else nombres
+
+    plt.figure(figsize=(8, 8))
+
+    if len(conjuntos) == 1:
+        # Dibujar un solo conjunto
+        plt.gca().add_patch(Ellipse((0.5, 0.5), 0.4, 0.4, color='blue', alpha=0.5))
+        plt.text(0.5, 0.5, '\n'.join(map(str, conjuntos[0])), ha='center', va='center', fontsize=12, color='black')
+        plt.title(f'Diagrama de Venn para 1 Conjunto: {nombres[0]}')
+        plt.gca().set_aspect('equal')
+        plt.axis('off')
+
+    elif len(conjuntos) == 2:
+        v = venn2(subsets=conjuntos, set_labels=nombres)
+        
+        for label_id in ['10', '01', '11']:
+                 #'10' representa la región del diagrama que solo pertenece al primer conjunto (excluyendo el segundo conjunto).
+            #'01' representa la región del diagrama que solo pertenece al segundo conjunto (excluyendo el primer conjunto).
+            #'11' representa la intersección de ambos conjuntos.
+            label = v.get_label_by_id(label_id)
+            if label:
+                label.set_text('\n'.join(map(str, conjuntos[0] - conjuntos[1])) if label_id == '10' else
+                               '\n'.join(map(str, conjuntos[1] - conjuntos[0])) if label_id == '01' else
+                               '\n'.join(map(str, conjuntos[0] & conjuntos[1])))
+        
+        plt.title('Diagrama de Venn para 2 Conjuntos')
+
+    elif len(conjuntos) == 3:
+        v = venn3(subsets=conjuntos, set_labels=nombres)
+        
+        for label_id in ['100', '010', '001', '110', '101', '011', '111']:
+            label = v.get_label_by_id(label_id)
+            if label:
+                label.set_text('\n'.join(map(str, conjuntos[0] - conjuntos[1] - conjuntos[2])) if label_id == '100' else
+                               '\n'.join(map(str, conjuntos[1] - conjuntos[0] - conjuntos[2])) if label_id == '010' else
+                               '\n'.join(map(str, conjuntos[2] - conjuntos[0] - conjuntos[1])) if label_id == '001' else
+                               '\n'.join(map(str, conjuntos[0] & conjuntos[1] - conjuntos[2])) if label_id == '110' else
+                               '\n'.join(map(str, conjuntos[0] & conjuntos[2] - conjuntos[1])) if label_id == '101' else
+                               '\n'.join(map(str, conjuntos[1] & conjuntos[2] - conjuntos[0])) if label_id == '011' else
+                               '\n'.join(map(str, conjuntos[0] & conjuntos[1] & conjuntos[2])))
+        
+        plt.title('Diagrama de Venn para 3 Conjuntos')
+
+    else:
+        print("Solo se pueden mostrar diagramas de Venn para 1, 2 o 3 conjuntos.")
+        return
+
+    plt.show()
+
+
+
+
 
 # Función para leer conjuntos desde la entrada del usuario
 def leer_conjuntos():
@@ -106,16 +166,7 @@ def calcularDiferenciaSimetrica(conjuntos):
     resultado = calcularDS(nuevo_conjuntos)
     return resultado
 
-# Función para mostrar el diagrama de Venn
-def mostrar_diagrama_venn(conjuntos):
-    if len(conjuntos) == 2:
-        venn2(conjuntos)
-        plt.show()
-    elif len(conjuntos) == 3:
-        venn3(conjuntos)
-        plt.show()
-    else:
-        print("Solo se pueden mostrar diagramas de Venn para 2 o 3 conjuntos.")
+
 
 
 # Leer conjuntos desde la entrada del usuario
@@ -138,7 +189,7 @@ if conjuntos:
         print("Subconjunto aleatorio:", subconjunto)
 
     
-        mostrar_diagrama_venn(conjuntos)
+    mostrar_diagrama_venn(conjuntos)
    
 else:
     print("No se han ingresado conjuntos.")
