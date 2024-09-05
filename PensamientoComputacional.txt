@@ -1,0 +1,30 @@
+Abstraccion
+
+Lo primero es identificar que se nos pide, es decir, los resultados de 
+las operaciones entre conjuntos y su diagramacion. A demas, la informacion 
+importante son los conjuntos y las operaciones que se requieren hacer.
+
+Descomposicion
+
+    1. Se ingresan los conjuntos
+    2. Se muestra la grafica de los conjuntos
+    3. Se calcula la unicon de conjuntos
+    4. Se muestra la union de conjuntos
+    5. Se calcula la diferencia de conjuntos
+    6. Se muestra la diferencia de conjuntos
+    7. Se calcula la interseccion de conjuntos
+    8. Se muestra la interseccion de conjuntos
+    9. Se calcula la diferencia simetrica de conjuntos
+    10. Se muestra la diferencia simetrica de conjuntos
+    11. Se calcula el subconjunto aleatorio
+    10. Se muestra el subconjunto aleatorio
+
+Reconocimiento de patrones
+
+Se realizan analisis en donde se detalla que las operaciones de
+union e interseccion son reautilizables para los calculos de las 
+distintas operaciones de conjuntos.
+
+Codificacion
+
+Se realiza el codigo
